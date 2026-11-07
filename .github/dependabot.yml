@@ -1,0 +1,23 @@
+version: 2
+
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      tutorialkit:
+        patterns:
+          - '@tutorialkit/*'
+      tooling:
+        patterns:
+          - '@astrojs/*'
+          - 'astro'
+          - 'prettier-plugin-astro'
+          - 'typescript'
+    ignore:
+      # @tutorialkit/astro 1.6.0 requires astro ^4.15.0, so any major bump breaks the build.
+      # Drop this rule when a newer TutorialKit release supports astro 5+.
+      - dependency-name: 'astro'
+        versions: ['>=5']
