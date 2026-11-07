@@ -32,6 +32,17 @@ pnpm run build
 pnpm run preview
 ```
 
+## Deploy
+
+The site is a static build, but the terminal needs the page to be cross-origin isolated: the runtime uses `SharedArrayBuffer`, which only exists in an isolated context. Every response therefore needs
+
+```yaml
+Cross-Origin-Opener-Policy: same-origin
+Cross-Origin-Embedder-Policy: require-corp
+```
+
+`astro dev` and `astro preview` already send them, but a static host has to be told. `vercel.json` does it for Vercel; on another host, add the same two headers (Cloudflare and Netlify read a `_headers` file).
+
 ## Repository structure
 
 ```bash
@@ -44,6 +55,7 @@ pnpm run preview
 │   │   └── tutorial         # The tutorial content
 │   └── templates            # The project the reader starts from
 ├── vendor/tutorialkit       # The fork, cloned by "pnpm run setup" (not committed)
+├── vercel.json              # Cross-origin isolation headers for the deployment
 └── uno.config.ts            # UnoCSS config
 ```
 
