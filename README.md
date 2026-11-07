@@ -57,7 +57,7 @@ packages:
   # ... the other packages the fork ships
 ```
 
-`pnpm run setup` clones the fork at the pinned tag into `vendor/tutorialkit` (git-ignored), and `pnpm run dev` / `pnpm run build` build those packages when their `dist` is missing. To follow the fork's `main` instead of the pinned tag, change `FORK_REF` in `scripts/setup-fork.mjs` and run `pnpm run setup` again.
+`pnpm run setup` clones the fork at the pinned tag into `vendor/tutorialkit` (git-ignored), with a sparse checkout that keeps only the five packages above and skips its docs, `e2e` and extensions folders, and `pnpm run dev` / `pnpm run build` build those packages when their `dist` is missing. To follow the fork's `main` instead of the pinned tag, change `FORK_REF` in `scripts/setup-fork.mjs` and run `pnpm run setup` again.
 
 The content follows the TutorialKit structure of parts, chapters, and lessons:
 
