@@ -1,0 +1,7 @@
+packages:
+  - '.'
+  - 'vendor/tutorialkit/packages/types'
+  - 'vendor/tutorialkit/packages/runtime'
+  - 'vendor/tutorialkit/packages/theme'
+  - 'vendor/tutorialkit/packages/react'
+  - 'vendor/tutorialkit/packages/astro'

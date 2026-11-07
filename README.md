@@ -18,11 +18,12 @@ Every lesson ships the complete set of files for that step, so you can read the 
 ## Run it locally
 
 ```bash
+pnpm run setup   # clone the TutorialKit fork this tutorial runs on
 pnpm install
 pnpm run dev
 ```
 
-The site is served on <http://localhost:4321>. The tutorial runs entirely in your browser: the code runs in a WebContainer, so nothing is installed on your machine.
+The site is served on <http://localhost:4321>. The tutorial runs entirely in your browser: the code runs in the [OpenVessel runtime](https://github.com/ilteoood/tutorialkit), so nothing is installed on your machine.
 
 To produce a static build:
 
@@ -37,12 +38,27 @@ pnpm run preview
 .
 ├── astro.config.ts          # TutorialKit is built on Astro
 ├── public                   # Logo and favicon
+├── scripts                  # Clones and builds the TutorialKit fork
 ├── src
 │   ├── content
 │   │   └── tutorial         # The tutorial content
 │   └── templates            # The project the reader starts from
+├── vendor/tutorialkit       # The fork, cloned by "pnpm run setup" (not committed)
 └── uno.config.ts            # UnoCSS config
 ```
+
+## Where TutorialKit comes from
+
+The lessons run on the [OpenVessel runtime](https://github.com/ilteoood/tutorialkit), a fork of TutorialKit that replaces the WebContainer with an open runtime. Its packages are not on npm, so `package.json` asks for them with `workspace:*` and `pnpm-workspace.yaml` includes the clone:
+
+```yaml
+packages:
+  - '.'
+  - 'vendor/tutorialkit/packages/astro'
+  # ... the other packages the fork ships
+```
+
+`pnpm run setup` clones the fork at the pinned tag into `vendor/tutorialkit` (git-ignored), with a sparse checkout that keeps only the five packages above and skips its docs, `e2e` and extensions folders, and `pnpm run dev` / `pnpm run build` build those packages when their `dist` is missing. To follow the fork's `main` instead of the pinned tag, change `FORK_REF` in `scripts/setup-fork.mjs` and run `pnpm run setup` again.
 
 The content follows the TutorialKit structure of parts, chapters, and lessons:
 
@@ -84,7 +100,7 @@ The fence is replaced with the real content of the file.
 ## Contributing
 
 1. Fork the repository and create a branch.
-2. Run `pnpm install` and `pnpm run dev` to work on the tutorial.
+2. Run `pnpm run setup`, `pnpm install` and `pnpm run dev` to work on the tutorial.
 3. Keep `pnpm run build` green: it validates the content against the TutorialKit schema.
 4. Open a pull request describing what the lesson teaches and how you verified it.
 

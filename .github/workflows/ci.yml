@@ -25,6 +25,9 @@ jobs:
           node-version: 20
           cache: pnpm
 
+      - name: Clone the tutorialkit fork
+        run: pnpm run setup
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
