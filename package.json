@@ -5,26 +5,35 @@
   "private": true,
   "packageManager": "pnpm@8.15.6",
   "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
-    "build": "astro build",
+    "setup": "node scripts/setup-fork.mjs",
+    "dev": "node scripts/build-fork.mjs && astro dev",
+    "start": "node scripts/build-fork.mjs && astro dev",
+    "build": "node scripts/build-fork.mjs && astro build",
     "check": "astro check",
     "preview": "astro preview"
   },
   "dependencies": {
-    "@tutorialkit/react": "^1.6.0",
+    "@tutorialkit/react": "workspace:*",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@astrojs/check": "^0.7.0",
     "@astrojs/react": "^3.6.0",
-    "@tutorialkit/astro": "^1.6.0",
-    "@tutorialkit/theme": "^1.6.0",
-    "@tutorialkit/types": "^1.6.0",
+    "@tutorialkit/astro": "workspace:*",
+    "@tutorialkit/theme": "workspace:*",
+    "@tutorialkit/types": "workspace:*",
     "@types/react": "^18.3.3",
     "astro": "^4.15.0",
     "prettier-plugin-astro": "^0.14.1",
     "typescript": "^5.4.5"
+  },
+  "pnpm": {
+    "overrides": {
+      "@types/hast": "3.0.4",
+      "@types/unist": "3.0.2",
+      "mdast-util-from-markdown": "2.0.1",
+      "mdast-util-to-hast": "13.2.0"
+    }
   }
 }
