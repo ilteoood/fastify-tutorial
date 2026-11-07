@@ -6,7 +6,7 @@ focus: '/src/server.js'
 
 # Where to go from here
 
-You now have a working Fastify API: routes, plugins, decorators, hooks, validation, serialization, error handling and tests. Here is where to go next.
+You now have a working Fastify API: routes, plugins, decorators, hooks, validation, serialization, error handling, tests, a file as storage, content type parsers, security headers, a rate limit, logging, and the request lifecycle. Here is where to go next.
 
 ## The documentation
 
@@ -20,9 +20,9 @@ The [Fastify documentation](https://fastify.dev/docs/latest/) is the reference f
 
 ## The plugins you will need next
 
-- [`@fastify/cors`](https://github.com/fastify/fastify-cors) allows a browser on another domain to call your API.
+You have already used `@fastify/cors`, `@fastify/helmet` and `@fastify/rate-limit`. The ones you will want next:
+
 - [`@fastify/static`](https://github.com/fastify/fastify-static) serves files from a folder.
-- [`@fastify/helmet`](https://github.com/fastify/fastify-helmet) sets the security headers.
 - [`@fastify/jwt`](https://github.com/fastify/fastify-jwt) signs and verifies tokens.
 - [`@fastify/websocket`](https://github.com/fastify/fastify-websocket) handles real-time connections.
 
@@ -38,7 +38,7 @@ await fastify.register(cors);
 
 The next steps of this API, in order:
 
-1. Replace the `Map` with a database. The [Database guide](https://fastify.dev/docs/latest/Guides/Database/) shows how to keep the decorators as your data access layer.
+1. Replace the JSON file with a database. The [Database guide](https://fastify.dev/docs/latest/Guides/Database/) shows how to keep the decorators as your data access layer.
 2. Add authentication with a plugin and a `preHandler` hook.
 3. Add pagination to `GET /api/tasks`. The `limit` schema of the validation chapter is a good start.
 4. Write the OpenAPI documentation with [`@fastify/swagger`](https://github.com/fastify/fastify-swagger).
