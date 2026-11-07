@@ -15,6 +15,7 @@ The tutorial starts from zero: it assumes you know JavaScript but nothing about 
 Every lesson ships the complete set of files for that step, so you can read the code, change it in the in-browser editor, and run it in the terminal next to the lesson.
 
 ## Run it locally
+
 ```bash
 pnpm run setup   # clone the TutorialKit fork this tutorial runs on
 pnpm install
