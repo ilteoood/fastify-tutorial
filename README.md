@@ -6,11 +6,12 @@ The tutorial starts from zero: it assumes you know JavaScript but nothing about 
 
 ## What you will learn
 
-| Part                                       | What it covers                                                                     |
-| ------------------------------------------ | ---------------------------------------------------------------------------------- |
-| **Getting started**                        | What Fastify is, the Node.js bits you need, your first server, routes, requests, path parameters, plugins, decorators, hooks |
-| **Build a real API**                       | JSON schema validation, response serialization, error handling, a Tasks API, testing with `node:test` |
-| **Next steps**                             | Configuring the server for production, where to go from here                        |
+| Part                 | What it covers                                                                                                                                                     |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Getting started**  | What Fastify is, the Node.js bits you need, your first server, routes, requests, path parameters, plugins, decorators, hooks                                       |
+| **Build a real API** | Validation, serialization, error handling, a Tasks API, tests with `node:test`, saving data to a file, content type parsers, CORS, security headers, rate limiting |
+| **Going deeper**     | Encapsulation and `fastify-plugin`, logging and redaction, the request lifecycle, graceful shutdown                                                                |
+| **Next steps**       | Configuring the server for production, where to go from here                                                                                                       |
 
 Every lesson ships the complete set of files for that step, so you can read the code, change it in the in-browser editor, and run it in the terminal next to the lesson.
 
@@ -55,6 +56,8 @@ src/content/tutorial
 │   │   └── ...
 │   └── meta.md                 # Metadata for the chapter
 ├── 2-build-an-api
+├── 3-going-deeper
+├── 4-next-steps
 └── meta.md                     # Metadata for the tutorial
 ```
 
