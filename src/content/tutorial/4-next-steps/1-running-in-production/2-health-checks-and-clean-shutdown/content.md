@@ -59,6 +59,8 @@ Press the **Solve** button in the editor toolbar to apply it to your files.
 
 ## Try it
 
+Run these commands in the **Terminal** panel of this tutorial, the one next to the **Output** panel that runs the server.
+
 With the solution applied, start the server and ask it how it is doing:
 
 ```bash

@@ -57,6 +57,8 @@ Press the **Solve** button in the editor toolbar to apply it to your files.
 
 ## Try it
 
+Run these commands in the **Terminal** panel of this tutorial, the one next to the **Output** panel that runs the server.
+
 ```bash
 curl -i http://127.0.0.1:3000/
 node --input-type=module -e "import { createTaskStore } from './src/store/tasks.js'; const store = createTaskStore(); const task = store.create({ title: 'Learn Fastify' }); console.log(store.remove(task.id), store.find(task.id));"

@@ -86,6 +86,8 @@ Hooks follow the same direction. A hook added in `app.js` runs for the routes of
 
 ## Try it
 
+Run these commands in the **Terminal** panel of this tutorial, the one next to the **Output** panel that runs the server.
+
 With the two halves written but the decorator still in the wrong place:
 
 ```bash

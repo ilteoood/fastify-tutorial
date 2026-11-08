@@ -44,6 +44,8 @@ Press the **Solve** button in the editor toolbar to apply it to your files.
 
 ## Try it
 
+Run these commands in the **Terminal** panel of this tutorial, the one next to the **Output** panel that runs the server.
+
 ```bash
 curl -i http://127.0.0.1:3000/api/tasks
 curl -i -H 'accept-version: 2.0.0' http://127.0.0.1:3000/api/tasks

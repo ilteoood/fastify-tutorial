@@ -53,6 +53,8 @@ Press the **Solve** button in the editor toolbar to apply it to your files.
 
 ## Try it
 
+Run these commands in the **Terminal** panel of this tutorial, the one next to the **Output** panel that runs the server.
+
 Every call below carries the `x-api-key: dev-key` header the last lesson added; without it each of them answers `401`. In the exercise state, before you register anything, the documentation page does not exist:
 
 ```bash
