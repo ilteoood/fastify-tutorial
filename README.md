@@ -43,6 +43,8 @@ Cross-Origin-Embedder-Policy: require-corp
 
 `astro dev` and `astro preview` already send them, but a static host has to be told. `vercel.json` does it for Vercel; on another host, add the same two headers (Cloudflare and Netlify read a `_headers` file).
 
+Vercel also caches the build output between deployments. `vercel.json` turns that cache off for every deployment, so each build starts from a clean checkout at the cost of a slower build.
+
 ## Repository structure
 
 ```bash
@@ -55,7 +57,7 @@ Cross-Origin-Embedder-Policy: require-corp
 │   │   └── tutorial         # The tutorial content
 │   └── templates            # The project the reader starts from
 ├── vendor/tutorialkit       # The fork, cloned by "pnpm run setup" (not committed)
-├── vercel.json              # Cross-origin isolation headers for the deployment
+├── vercel.json              # Cross-origin isolation headers and build settings for the deployment
 └── uno.config.ts            # UnoCSS config
 ```
 
