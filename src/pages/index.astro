@@ -1,0 +1,41 @@
+---
+import { getCollection } from 'astro:content';
+import HeadTags from '../components/HeadTags.astro';
+
+const lessonPaths = (await getCollection('tutorial'))
+  .filter((entry) => entry.data.type === 'lesson')
+  .map((entry) => entry.id.split('/').slice(0, -1).join('/'))
+  .sort(comparePaths);
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const redirect = `${base}/${lessonPaths[0]}`;
+
+// shortcut: folder-number order only, upgrade if the tutorial starts using explicit `order:` frontmatter
+function comparePaths(a: string, b: string) {
+  const orderA = a.split('/').map((segment) => parseInt(segment, 10) || 0);
+  const orderB = b.split('/').map((segment) => parseInt(segment, 10) || 0);
+
+  for (let index = 0; index < Math.max(orderA.length, orderB.length); index++) {
+    const difference = (orderA[index] ?? 0) - (orderB[index] ?? 0);
+    if (difference !== 0) {
+      return difference;
+    }
+  }
+
+  return 0;
+}
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <HeadTags>
+      <title slot="title">Redirecting to {redirect}</title>
+    </HeadTags>
+    <meta http-equiv="refresh" content={`0;url=${redirect}`} />
+  </head>
+  <body>
+    <p>Redirecting to <a href={redirect}>{redirect}</a></p>
+  </body>
+</html>
