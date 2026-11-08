@@ -1,11 +1,10 @@
 import Fastify from 'fastify';
 import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
-import rateLimit from '@fastify/rate-limit';
 import taskRoutes from './routes/tasks.js';
 import { createTaskStore } from './store/tasks.js';
 
-export async function buildApp(options = {}) {
+export async function buildApp({ storeFilePath, ...options } = {}) {
   const fastify = Fastify({ ...options, logger: options.logger ?? false });
 
   await fastify.register(cors, {
@@ -19,12 +18,11 @@ export async function buildApp(options = {}) {
     crossOriginResourcePolicy: { policy: 'cross-origin' },
   });
 
-  await fastify.register(rateLimit, {
-    max: 100,
-    timeWindow: '1 minute',
-  });
+  // TODO: import and register @fastify/rate-limit for every route, 100 requests per minute
 
-  fastify.decorate('tasks', createTaskStore());
+  fastify.decorate('tasks', await createTaskStore({ filePath: storeFilePath }));
+
+  fastify.removeContentTypeParser('text/plain');
 
   fastify.addContentTypeParser(
     'text/plain',

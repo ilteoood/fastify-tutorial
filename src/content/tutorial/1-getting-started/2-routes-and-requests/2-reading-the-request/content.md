@@ -17,6 +17,7 @@ Every handler receives the same `request` object. It is your window into what th
 
 | Property | What it holds | Example |
 |---|---|---|
+| `request.id` | The id Fastify gives to every request | `'req-1'` |
 | `request.method` | The HTTP method | `'GET'` |
 | `request.url` | The URL that was called | `'/echo?a=1'` |
 | `request.query` | The query string, as an object | `{ a: '1' }` |
@@ -27,6 +28,22 @@ Every handler receives the same `request` object. It is your window into what th
 | `request.log` | A logger that knows which request it belongs to | `request.log.info('hi')` |
 
 Header names are always lower case, so you write `request.headers['content-type']` and not `request.headers['Content-Type']`.
+
+## Your turn
+
+`GET /echo` is missing, and the `curl` command below calls it. Build it so that it reports what the request carried: the id Fastify assigned to it, the method, the full URL, the parsed query string, and the `user-agent` header.
+
+Return a single object with the keys `id`, `method`, `url`, `query` and `userAgent`, read them from `request`, and keep the `POST /echo` route that is already in the file. The user agent can be absent, so fall back to `null` with `request.headers['user-agent'] ?? null`.
+
+<details>
+<summary>Show the solution</summary>
+
+```solution:/src/server.js
+```
+
+</details>
+
+Press the **Solve** button in the editor toolbar to apply it to your files.
 
 ## Try it
 

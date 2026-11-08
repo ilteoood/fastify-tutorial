@@ -2,27 +2,14 @@ import Fastify from 'fastify';
 import taskRoutes from './routes/tasks.js';
 import { createTaskStore } from './store/tasks.js';
 
-export async function buildApp(options = {}) {
+export async function buildApp({ storeFilePath, ...options } = {}) {
   const fastify = Fastify({ ...options, logger: options.logger ?? false });
 
-  fastify.decorate('tasks', createTaskStore());
+  fastify.decorate('tasks', await createTaskStore({ filePath: storeFilePath }));
 
-  fastify.addContentTypeParser(
-    'text/plain',
-    { parseAs: 'string' },
-    (request, body, done) => {
-      const title = body.trim();
+  fastify.removeContentTypeParser('text/plain');
 
-      if (title === '') {
-        const error = new Error('title is required');
-        error.statusCode = 400;
-
-        return done(error);
-      }
-
-      done(null, { title });
-    },
-  );
+  // TODO: add a text/plain parser that turns the body into a task title
 
   fastify.register(taskRoutes, { prefix: '/api' });
 

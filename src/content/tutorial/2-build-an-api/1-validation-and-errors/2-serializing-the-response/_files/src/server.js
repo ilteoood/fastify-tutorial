@@ -13,16 +13,7 @@ fastify.get(
           id: { type: 'integer' },
         },
       },
-      response: {
-        200: {
-          type: 'object',
-          properties: {
-            id: { type: 'integer' },
-            title: { type: 'string' },
-            done: { type: 'boolean' },
-          },
-        },
-      },
+      // TODO: add a response schema for 200 that keeps id, title and done
     },
   },
   async (request) => {

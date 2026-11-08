@@ -79,27 +79,5 @@ export default async function taskRoutes(fastify) {
     },
   );
 
-  fastify.delete(
-    '/tasks/:id',
-    {
-      schema: {
-        params: {
-          type: 'object',
-          required: ['id'],
-          properties: {
-            id: { type: 'integer' },
-          },
-        },
-      },
-    },
-    async (request, reply) => {
-      const removed = fastify.tasks.remove(request.params.id);
-
-      if (!removed) {
-        return reply.code(404).send({ error: 'Task not found' });
-      }
-
-      return reply.code(204).send();
-    },
-  );
+  // TODO: add the DELETE /tasks/:id route that removes a task and answers 204
 }

@@ -1,7 +1,7 @@
 ---
 type: lesson
 title: Log levels and request logs
-focus: '/src/app.js'
+focus: '/src/routes/tasks.js'
 ---
 
 # Log levels and request logs
@@ -40,7 +40,7 @@ const fastify = await buildApp({ logger: false });
 
 The `"level":30` field is the number of the level that produced the line: `30` is `info`.
 
-With `'debug'`, the `debug` and `trace` calls start to appear; with `'warn'`, both request lines disappear. A call below the configured level costs almost nothing, so you can leave `log.debug()` in production code.
+With `'debug'`, the `debug` calls start to appear and the `trace` ones still do not, because `trace` is one step below `debug`; with `'warn'`, both request lines disappear. A call below the configured level costs almost nothing, so you can leave `log.debug()` in production code.
 
 ## Two loggers
 
@@ -53,7 +53,7 @@ Fastify gives you two loggers, both instances of pino, the logging library Fasti
 
 ```
 
-Inside a handler, `request.log.info({ taskId }, 'task created')` adds `taskId` to the line, and Fastify adds `reqId` for you. The 404 path uses `warn`: nothing is broken, but the request did not do what was asked.
+Inside a handler, a log call takes an object first and the message second: every field of the object lands in the line, and Fastify adds `reqId` for you. The 404 path uses `warn`: nothing is broken, but the request did not do what was asked.
 
 :::tip
 `fastify.log.child({ module: 'tasks' })` returns a new logger that adds those fields to every line it writes. The route plugin above uses one, which is why its line carries `"module":"tasks"`. Use a child logger per module or feature.
@@ -75,6 +75,20 @@ The `reqId` is the same on all three. When a user reports "my task did not save"
 
 Each line is a complete JSON object, and the file is one object per line, also called **JSON Lines**. Log collectors index it without guessing, and an error stays on one line, its stack inside the `err` field. The `time` field is a Unix timestamp in milliseconds.
 
+## Your turn
+
+The handler that creates a task is quiet: it stores the body, answers `201` and writes no line of its own. Add one with `request.log`, at level `info`, carrying the id of the new task in a field called `taskId` and `task created` as the message. Leave the logger configuration in `src/app.js` as it is, and leave the `warn` lines of the three 404 paths alone.
+
+<details>
+<summary>Show the solution</summary>
+
+```solution:/src/routes/tasks.js
+```
+
+</details>
+
+Press the **Solve** button in the editor toolbar to apply it to your files.
+
 ## Try it
 
 Open the **Terminal** panel and run:
@@ -86,3 +100,5 @@ curl -i http://127.0.0.1:3000/api/tasks/999
 ```
 
 Find the `reqId` of the last request in the **Output** panel: its three lines share it. The POST also shows your `taskId` field.
+
+Without your line the POST writes two of the three: the incoming one and the completed one. The `taskId` field is the only thing that tells the log which task this request created, so it appears in exactly one place, right after the handler ran and before the response left.

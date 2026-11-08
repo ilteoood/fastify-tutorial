@@ -2,11 +2,12 @@ import Fastify from 'fastify';
 import taskRoutes from './routes/tasks.js';
 import { createTaskStore } from './store/tasks.js';
 
-export async function buildApp(options = {}) {
+export async function buildApp({ storeFilePath, ...options } = {}) {
   const fastify = Fastify({ ...options, logger: options.logger ?? false });
 
-  fastify.decorate('tasks', createTaskStore());
+  fastify.decorate('tasks', await createTaskStore({ filePath: storeFilePath }));
 
+  // TODO: remove the built-in text/plain parser so the API accepts JSON only
   fastify.register(taskRoutes, { prefix: '/api' });
 
   fastify.get('/', async () => {

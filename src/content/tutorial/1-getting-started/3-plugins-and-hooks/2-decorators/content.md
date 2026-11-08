@@ -26,11 +26,7 @@ After that line, `fastify.tasks` is the map you created, and every handler and p
 | `fastify.decorate(name, value)` | Adds `value` to the server |
 | `fastify.hasDecorator(name)` | Answers `true` if the name is already taken |
 
-You can decorate a function too:
-
-```js
-fastify.decorate('clock', () => new Date().toISOString());
-```
+You can decorate a function too. Fastify does not care what the value is: the name you decorate becomes a property of the server, and if the value happens to be a function you call it as `fastify.<name>()` from a handler.
 
 ## Decorating the request
 
@@ -49,6 +45,22 @@ Decorators are shared downwards, never upwards: a plugin can use the decorators 
 :::warn
 Decorating a name that already exists throws an error. Use `hasDecorator` first if the value may already be there.
 :::
+
+## Your turn
+
+Decorate the server with a function called `clock` that returns the current time as an ISO string, then use it in the `GET /` handler so the response gains a `now` field next to `hello`.
+
+Add the decorator above the routes, next to `fastify.decorate('tasks', new Map())`, and call `fastify.clock()` inside the handler; `new Date().toISOString()` gives you the string. The answer of `GET /` must look like `{ "hello": "world", "now": "2026-01-01T00:00:00.000Z" }`.
+
+<details>
+<summary>Show the solution</summary>
+
+```solution:/src/server.js
+```
+
+</details>
+
+Press the **Solve** button in the editor toolbar to apply it to your files.
 
 ## Try it
 

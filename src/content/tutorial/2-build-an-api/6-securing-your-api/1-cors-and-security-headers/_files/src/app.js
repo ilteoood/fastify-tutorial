@@ -1,24 +1,15 @@
 import Fastify from 'fastify';
-import cors from '@fastify/cors';
-import helmet from '@fastify/helmet';
 import taskRoutes from './routes/tasks.js';
 import { createTaskStore } from './store/tasks.js';
 
-export async function buildApp(options = {}) {
+export async function buildApp({ storeFilePath, ...options } = {}) {
   const fastify = Fastify({ ...options, logger: options.logger ?? false });
 
-  await fastify.register(cors, {
-    origin: ['http://localhost:5173'],
-    methods: ['GET', 'POST', 'PATCH', 'DELETE'],
-  });
+  // TODO: import and register @fastify/cors and @fastify/helmet
 
-  await fastify.register(helmet, {
-    contentSecurityPolicy: false,
-    xFrameOptions: false,
-    crossOriginResourcePolicy: { policy: 'cross-origin' },
-  });
+  fastify.decorate('tasks', await createTaskStore({ filePath: storeFilePath }));
 
-  fastify.decorate('tasks', createTaskStore());
+  fastify.removeContentTypeParser('text/plain');
 
   fastify.addContentTypeParser(
     'text/plain',

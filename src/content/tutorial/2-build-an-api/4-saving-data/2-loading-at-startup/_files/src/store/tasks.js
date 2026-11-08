@@ -1,26 +1,11 @@
-import { readFile, writeFile } from "node:fs/promises";
+import { writeFile } from "node:fs/promises";
 
 export async function createTaskStore({ filePath = "data/tasks.json" } = {}) {
   const tasks = new Map();
   let nextId = 1;
 
   async function load() {
-    let stored;
-
-    try {
-      stored = JSON.parse(await readFile(filePath, "utf8"));
-    } catch (error) {
-      if (error.code !== "ENOENT") {
-        throw error;
-      }
-
-      return;
-    }
-
-    for (const task of stored) {
-      tasks.set(task.id, task);
-      nextId = Math.max(nextId, task.id + 1);
-    }
+    // TODO: import readFile from node:fs/promises, then read filePath back and fill the map
   }
 
   async function save() {

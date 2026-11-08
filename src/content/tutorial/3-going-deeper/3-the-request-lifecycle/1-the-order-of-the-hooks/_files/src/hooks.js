@@ -3,31 +3,9 @@ export function registerLifecycleHooks(fastify) {
     request.log.info('onRequest');
   });
 
-  fastify.addHook('preParsing', async (request) => {
-    request.log.info('preParsing');
-  });
-
-  fastify.addHook('preValidation', async (request) => {
-    request.log.info('preValidation');
-  });
-
-  fastify.addHook('preHandler', async (request) => {
-    request.log.info('preHandler');
-  });
-
-  fastify.addHook('preSerialization', async (request) => {
-    request.log.info('preSerialization');
-  });
-
-  fastify.addHook('onSend', async (request) => {
-    request.log.info('onSend');
-  });
+  // TODO: add the six hooks that run between these two, each logging its own name
 
   fastify.addHook('onResponse', async (request) => {
     request.log.info('onResponse');
-  });
-
-  fastify.addHook('onError', async (request, reply, error) => {
-    request.log.info(`onError: ${error.message}`);
   });
 }

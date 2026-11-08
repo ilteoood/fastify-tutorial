@@ -117,39 +117,3 @@ test("DELETE /api/tasks/:id removes a task", async (t) => {
 
   assert.equal(response.statusCode, 204);
 });
-
-test("tasks survive a restart", async (t) => {
-  const storeFilePath = join(tmpdir(), `tasks-${randomUUID()}.json`);
-
-  const before = await buildApp({ storeFilePath });
-  await before.ready();
-
-  await before.inject({
-    method: "POST",
-    url: "/api/tasks",
-    payload: { title: "Learn Fastify" },
-  });
-
-  await before.close();
-
-  const fastify = await buildApp({ storeFilePath });
-  await fastify.ready();
-
-  t.after(() => fastify.close());
-
-  const stored = await fastify.inject({
-    method: "GET",
-    url: "/api/tasks",
-  });
-
-  assert.equal(stored.json().tasks.length, 1);
-  assert.equal(stored.json().tasks[0].title, "Learn Fastify");
-
-  const created = await fastify.inject({
-    method: "POST",
-    url: "/api/tasks",
-    payload: { title: "Write a test" },
-  });
-
-  assert.equal(created.json().task.id, 2);
-});

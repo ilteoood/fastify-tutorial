@@ -8,14 +8,16 @@ focus: '/src/server.js'
 
 The response schema works like the request schema, but in the other direction: it decides which fields leave your server.
 
+Take a profile route that answers with a user. Its response schema could look like this:
+
 ```js
 response: {
   200: {
     type: 'object',
     properties: {
-      id: { type: 'integer' },
-      title: { type: 'string' },
-      done: { type: 'boolean' },
+      name: { type: 'string' },
+      email: { type: 'string' },
+      verified: { type: 'boolean' },
     },
   },
 },
@@ -50,6 +52,20 @@ response: {
 ## The parameters are typed now
 
 Notice that the params schema says `id` is an `integer`. Fastify converts `request.params.id` from the string `'42'` into the number `42` for you, before your handler runs.
+
+## Your turn
+
+The handler below returns a `secret` field, and `curl` happily shows it. Add a `response` schema so that a `200` answer carries only `id`, `title` and `done`: an integer, a string and a boolean. The params schema is already in place, so leave it as it is.
+
+<details>
+<summary>Show the solution</summary>
+
+```solution:/src/server.js
+```
+
+</details>
+
+Press the **Solve** button in the editor toolbar to apply it to your files.
 
 ## Try it
 

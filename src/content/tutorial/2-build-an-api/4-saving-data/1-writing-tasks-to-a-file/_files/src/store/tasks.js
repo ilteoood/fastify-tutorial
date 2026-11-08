@@ -5,7 +5,7 @@ export function createTaskStore({ filePath = "data/tasks.json" } = {}) {
   let nextId = 1;
 
   async function save() {
-    await writeFile(filePath, JSON.stringify([...tasks.values()], null, 2));
+    // TODO: write the tasks to filePath as pretty-printed JSON
   }
 
   return {

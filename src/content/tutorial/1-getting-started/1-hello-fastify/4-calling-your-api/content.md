@@ -1,7 +1,7 @@
 ---
 type: lesson
 title: Calling your API
-focus: '/src/server.js'
+focus: '/smoke.mjs'
 ---
 
 # Calling your API
@@ -73,5 +73,31 @@ We do not have a `/tasks` route yet, so this answers with `404`. We will add it 
 :::tip
 Two things are needed to send a body: the `-d` flag for the body itself, and the `Content-Type` header that says what kind of body it is. Without that header Fastify does not know how to read it.
 :::
+
+## Your turn
+
+A quick way to check a route without opening a browser is `fastify.inject()`: it sends a request straight into a Fastify instance, with no port and no network.
+
+`smoke.mjs` in the root of the project builds a server with the same `GET /` route as `src/server.js`. Send that server a `GET` request for `/` with `fastify.inject({ method: 'GET', url: '/' })` and log `response.statusCode` with `console.log`.
+
+Nothing must listen on a port: `inject` answers on its own, and the script prints one line and exits.
+
+<details>
+<summary>Show the solution</summary>
+
+```solution:/smoke.mjs
+```
+
+</details>
+
+Press the **Solve** button in the editor toolbar to apply it to your files.
+
+## Try it
+
+```bash
+node smoke.mjs
+```
+
+It prints `200`, which is exactly the status code you saw in the `curl -i` output.
 
 Now that you know how to talk to a server, let us add some real routes.

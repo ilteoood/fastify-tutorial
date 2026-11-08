@@ -46,6 +46,22 @@ A hook registered on the server applies to every route, including the ones of yo
 A hook that throws an error stops the request: Fastify calls the error handler and never reaches your handler. That is how you write authentication.
 :::
 
+## Your turn
+
+`onRequest` and `preHandler` are in the file; `onSend` is missing. Add it so that every response reports how long the request took: compute the difference between now and `request.startedAt` (stored by `onRequest`), set it as the `x-duration-ms` header, and log it with `request.log.info({ durationMs }, ...)`.
+
+An `onSend` hook receives `(request, reply, payload)` and must return the payload it was given, otherwise the response body is lost. The header value has to be a string, so wrap the number in `String(...)`.
+
+<details>
+<summary>Show the solution</summary>
+
+```solution:/src/server.js
+```
+
+</details>
+
+Press the **Solve** button in the editor toolbar to apply it to your files.
+
 ## Try it
 
 ```bash

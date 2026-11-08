@@ -45,19 +45,7 @@ Notice that the body schema has no `required`. A `PATCH` may change the title, t
 
 ## Deleting
 
-```js
-fastify.delete('/tasks/:id', {
-  schema: { /* ... */ },
-}, async (request, reply) => {
-  const removed = fastify.tasks.remove(request.params.id);
-
-  if (!removed) {
-    return reply.code(404).send({ error: 'Task not found' });
-  }
-
-  return reply.code(204).send();
-});
-```
+Deleting uses the store method you wrote earlier: a `DELETE` on `/tasks/:id` with a `params` schema for the id, and a `404` when the store says the task was not there.
 
 `204 No Content` is the right answer for a successful delete: there is nothing left to send, so the body is empty.
 
@@ -70,6 +58,20 @@ fastify.delete('/tasks/:id', {
 
 Our API uses `PATCH`, because a client that only wants to tick the done box should not have to send the title back.
 
+## Your turn
+
+`PATCH` works, but there is no way to delete a task yet. Add `DELETE /api/tasks/:id`, with the same params schema as the other routes on a single task. Answer `404` when the store says the task was not there, and `204` with an empty body when it was. Leave the `PATCH` route alone.
+
+<details>
+<summary>Show the solution</summary>
+
+```solution:/src/routes/tasks.js
+```
+
+</details>
+
+Press the **Solve** button in the editor toolbar to apply it to your files.
+
 ## Try it
 
 ```bash
@@ -78,6 +80,8 @@ curl -i -X PATCH http://127.0.0.1:3000/api/tasks/1 -H 'Content-Type: application
 curl -i -X DELETE http://127.0.0.1:3000/api/tasks/1
 curl -i http://127.0.0.1:3000/api/tasks
 ```
+
+The delete answers `204 No Content` and the last call shows an empty list. Until the route exists, the delete is a plain `404` and the task is still there.
 
 :::warn
 The ids only work as long as the server keeps running. Every restart starts again from task `1`.

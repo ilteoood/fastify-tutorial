@@ -42,6 +42,20 @@ So `server.js` listens for both signals, logs which one arrived, waits for `clos
 `close()` waits for in-flight requests. A request that never finishes keeps the process alive, and Docker kills it after its timeout. Bigger services add a timer that exits anyway.
 :::
 
+## Your turn
+
+`server.js` builds the app and listens, and stops there: `Ctrl` + `C` kills the process where it stands, so `close()` and the `onClose` hook never run and a request in flight is cut. Write the `shutdown(signal)` function the lesson describes: log `${signal} received, closing the server`, await `fastify.close()`, then exit with code `0`. Register it for both signals with `process.once`, before `listen()` is called. Then start the server, press `Ctrl` + `C` and read the last two lines of the **Output** panel.
+
+<details>
+<summary>Show the solution</summary>
+
+```solution:/src/server.js
+```
+
+</details>
+
+Press the **Solve** button in the editor toolbar to apply it to your files.
+
 ## Try it
 
 ```bash
@@ -62,3 +76,5 @@ npm test
 ```
 
 Seven green tests, and no port was opened for any of them.
+
+Without your handler the two lines never appear: the process ends on the spot, `closing the task store` is never logged, and the shell reports `130` for the interrupted process instead of `0`.

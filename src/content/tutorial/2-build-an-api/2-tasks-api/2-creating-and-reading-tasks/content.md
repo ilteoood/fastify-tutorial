@@ -26,26 +26,7 @@ fastify.get('/tasks', async () => {
 });
 ```
 
-Creating a task:
-
-```js
-fastify.post('/tasks', {
-  schema: {
-    body: {
-      type: 'object',
-      required: ['title'],
-      properties: {
-        title: { type: 'string', minLength: 1 },
-        done: { type: 'boolean', default: false },
-      },
-    },
-  },
-}, async (request, reply) => {
-  const task = fastify.tasks.create(request.body);
-
-  return reply.code(201).send({ task });
-});
-```
+Creating a task is the same shape in the other direction: a `POST` on `/tasks` with a `body` schema, and a handler that puts the validated body into the store.
 
 - The schema rejects a body without a title with `400`, before the handler runs.
 - `reply.code(201)` says "I created something". `201 Created` is the correct answer for a `POST` that creates a resource.
@@ -74,6 +55,20 @@ fastify.get('/tasks/:id', {
 });
 ```
 
+## Your turn
+
+The route that creates a task is missing, so `POST /api/tasks` does not exist yet. Add it: a `body` schema that requires a non-empty `title`, a handler that stores the body with `fastify.tasks.create()`, and an answer of `201` that carries the new task in a `task` field. Leave the two reading routes alone.
+
+<details>
+<summary>Show the solution</summary>
+
+```solution:/src/routes/tasks.js
+```
+
+</details>
+
+Press the **Solve** button in the editor toolbar to apply it to your files.
+
 ## Try it
 
 ```bash
@@ -83,7 +78,7 @@ curl -i http://127.0.0.1:3000/api/tasks/1
 curl -i http://127.0.0.1:3000/api/tasks/99
 ```
 
-The last call answers `404`: the id is in the URL, but not in the store.
+The first call answers `201 Created`, with the task in the body. The last one answers `404`: the id is in the URL, but not in the store.
 
 :::info
 The tasks live in memory. Restart the server and they are gone. That is fine for a tutorial, and it is also why the tests in the next chapter can start from a clean slate.

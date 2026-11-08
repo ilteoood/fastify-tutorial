@@ -18,15 +18,13 @@ We keep the `Map` — it already answers lookups by id — and copy the whole li
 
 `node:fs/promises` is the file-system module of Node.js, in its promise-based version. The `node:` prefix marks a module that is built into Node.js: there is nothing to install, and the prefix makes it obvious that the import does not come from `node_modules`.
 
-```js
-import { writeFile } from "node:fs/promises";
+`writeFile(path, text)` writes text to a file, replacing whatever was in it before, and answers with a promise. `JSON.stringify` does the other half of the job: it turns a value into text. It understands arrays and objects, not `Map`, so the `Map` has to become an array of tasks first — spreading its values does that.
 
-async function save() {
-  await writeFile(filePath, JSON.stringify([...tasks.values()], null, 2));
-}
+```js
+JSON.stringify({ id: 1, title: 'Learn Fastify' }, null, 2);
 ```
 
-`JSON.stringify` turns a value into text. It understands arrays and objects, not `Map`, so `[...tasks.values()]` converts the `Map` into an array of tasks first. The `2` is the indentation of the generated text, which keeps the file readable for a human.
+The third argument is the indentation of the generated text. Without it everything lands on one line; with `2` the file is readable for a human.
 
 `writeFile` returns a promise, so `save` has to be `async`, and every method that calls it must `await` it. That is why `create`, `update` and `remove` became `async` as well.
 
@@ -54,6 +52,20 @@ const removed = await fastify.tasks.remove(request.params.id);
 The path is `data/tasks.json`, relative to the directory the server is started from. `writeFile` creates the file, but not the folder, so `data/` has to exist.
 :::
 
+## Your turn
+
+`save()` is empty, so the tasks never reach the disk. Write its body: turn the store's tasks into an array, serialize it with `JSON.stringify` and two spaces of indentation, and write the result to `filePath` with `writeFile`. The function is already `async` and every method that changes a task already awaits it, so nothing else has to change.
+
+<details>
+<summary>Show the solution</summary>
+
+```solution:/src/store/tasks.js
+```
+
+</details>
+
+Press the **Solve** button in the editor toolbar to apply it to your files.
+
 ## Try it
 
 ```bash
@@ -61,7 +73,7 @@ curl -i -X POST http://127.0.0.1:3000/api/tasks -H 'Content-Type: application/js
 cat data/tasks.json
 ```
 
-The Terminal is a real shell, so `cat` prints the file you just wrote. Then delete the task and look again:
+The Terminal is a real shell, so `cat` prints the file you just wrote. Until `save()` is written, the request still answers `201`, but the file stays `[]`. Then delete the task and look again:
 
 ```bash
 curl -i -X DELETE http://127.0.0.1:3000/api/tasks/1

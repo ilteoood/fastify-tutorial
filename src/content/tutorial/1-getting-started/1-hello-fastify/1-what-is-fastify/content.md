@@ -77,4 +77,30 @@ The server is already running. Look at the **Output** panel at the bottom to see
 Each lesson gives you the code for that exact step. You are free to change anything in the editor — when you move to the next lesson the files are replaced with the new version, so experiment as much as you like.
 :::
 
+## Your turn
+
+The server in `src/server.js` already answers `GET /`. Add one more route, `GET /version`, that tells the client which API it is talking to: it must answer `200` with the object `{ name: 'tasks-api', version: '1.0.0' }`.
+
+Use the same shape as the route that is already there: `fastify.get(path, handler)`, with an `async` handler that returns a plain object. Fastify turns that object into JSON for you, so you do not have to write any JSON by hand.
+
+<details>
+<summary>Show the solution</summary>
+
+```solution:/src/server.js
+```
+
+</details>
+
+Press the **Solve** button in the editor toolbar to apply it to your files.
+
+## Try it
+
+Open the **Terminal** panel and ask the server for its version:
+
+```bash
+curl -s http://127.0.0.1:3000/version
+```
+
+You should see `{"name":"tasks-api","version":"1.0.0"}`.
+
 Next up: a very short tour of the Node.js features we are going to use.

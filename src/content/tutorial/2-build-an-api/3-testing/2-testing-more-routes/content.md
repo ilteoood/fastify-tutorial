@@ -32,13 +32,27 @@ async function buildTestApp(t) {
 ```file:/test/tasks.test.js
 ```
 
+## Your turn
+
+Five tests are in place: the index page, creating a task, a rejected body, the list and the `404`. Add the two that are missing: one that creates a task and then `PATCH`es `{ done: true }` onto it and checks the answer, and one that creates a task and `DELETE`s it, checking the status code. Use `buildTestApp(t)` in both, so each test starts from an empty store.
+
+<details>
+<summary>Show the solution</summary>
+
+```solution:/test/tasks.test.js
+```
+
+</details>
+
+Press the **Solve** button in the editor toolbar to apply it to your files.
+
 ## Try it
 
 ```bash
 npm test
 ```
 
-Seven tests, all green.
+Five tests pass now, and seven once you have written the last two.
 
 ## What to test
 

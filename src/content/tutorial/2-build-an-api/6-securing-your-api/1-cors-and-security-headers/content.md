@@ -46,6 +46,20 @@ This app relaxes three headers, because the preview panel shows it in an iframe 
 CORS is not authentication. It only tells browsers what they may read. `curl`, a script or another server can still call your API and ignore every CORS header.
 :::
 
+## Your turn
+
+Neither plugin is registered any more: `src/app.js` has the TODO where they belong. Register `@fastify/cors` with `origin` set to `['http://localhost:5173']` and the methods `GET`, `POST`, `PATCH` and `DELETE`, then `@fastify/helmet` with the three relaxed options the warning above lists. Both imports are gone too, so add them back. Keep the registrations above the routes.
+
+<details>
+<summary>Show the solution</summary>
+
+```solution:/src/app.js
+```
+
+</details>
+
+Press the **Solve** button in the editor toolbar to apply it to your files.
+
 ## Try it
 
 ```bash
@@ -54,4 +68,4 @@ curl -i -H 'Origin: http://example.com' http://127.0.0.1:3000/api/tasks
 curl -i -X OPTIONS http://127.0.0.1:3000/api/tasks -H 'Origin: http://localhost:5173' -H 'Access-Control-Request-Method: PATCH'
 ```
 
-The first response has `access-control-allow-origin: http://localhost:5173` and the helmet headers. The second has the helmet headers but no `access-control-allow-origin`, so a browser there would discard it. The third is the preflight answer: `204` with `access-control-allow-methods: GET, POST, PATCH, DELETE`.
+The first response has `access-control-allow-origin: http://localhost:5173` and the helmet headers, `x-content-type-options: nosniff` among them. The second has the helmet headers but no `access-control-allow-origin`, so a browser there would discard it. The third is the preflight answer: `204` with `access-control-allow-methods: GET, POST, PATCH, DELETE`. Before your change the first response has neither kind of header, and the preflight is a `404`.

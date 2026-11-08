@@ -23,9 +23,7 @@ export async function buildApp(options = {}) {
     };
   });
 
-  fastify.get('/stats', async () => {
-    return { open: fastify.countOpenTasks() };
-  });
+  // TODO: add the GET /stats route that answers with fastify.countOpenTasks()
 
   return fastify;
 }

@@ -9,6 +9,8 @@ const fastify = Fastify({
   },
 });
 
+// TODO: add a `preHandler` hook that answers 401 with `{ error: 'Unauthorized' }` unless the `x-api-key` header matches `process.env?.API_KEY ?? 'dev-key'`
+
 fastify.get('/', async () => {
   return { hello: 'world' };
 });

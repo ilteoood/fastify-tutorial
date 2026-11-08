@@ -51,6 +51,28 @@ Then a route is limited only when it declares `config.rateLimit`.
 The plugin counts in memory, inside one process. Run two servers and each one allows the full `max`; use the `redis` option to share the count. Behind a proxy, set `trustProxy` on the Fastify instance too, or every client looks like the proxy's IP.
 :::
 
+## Your turn
+
+No request is counted yet: the plugin is in `package.json` but not registered, and `POST /tasks` has no limit of its own. Register `@fastify/rate-limit` in `src/app.js` with `max: 100` over `timeWindow: '1 minute'` for every route, then give the write route its own `config.rateLimit` of five tasks per minute. The import is gone as well, so add it back.
+
+<details>
+<summary>Show the solution</summary>
+
+```solution:/src/app.js
+```
+
+</details>
+
+<details>
+<summary>Show the solution</summary>
+
+```solution:/src/routes/tasks.js
+```
+
+</details>
+
+Press the **Solve** button in the editor toolbar to apply it to your files.
+
 ## Try it
 
 ```bash
@@ -61,4 +83,4 @@ done
 curl -i -X POST http://127.0.0.1:3000/api/tasks -H 'Content-Type: application/json' -d '{"title":"Spam"}'
 ```
 
-The first response reports `x-ratelimit-limit: 100`. The loop prints five `201`s, one per task. The last request is the sixth one in the window: `429`, with `x-ratelimit-remaining: 0`, `retry-after: 60` and a body that says when to retry. The tests still pass, because every test builds its own app and starts with a fresh counter.
+The first response reports `x-ratelimit-limit: 100`, a header it does not have before your change. The loop prints five `201`s, one per task. The last request is the sixth one in the window: `429`, with `x-ratelimit-remaining: 0`, `retry-after: 60` and a body that says when to retry. Without the limits all six are a `201`. The tests still pass, because every test builds its own app and starts with a fresh counter.

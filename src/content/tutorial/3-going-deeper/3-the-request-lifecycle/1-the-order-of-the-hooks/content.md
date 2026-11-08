@@ -41,11 +41,25 @@ Each hook logs its own name, and `onError` adds the message of the error. `onSen
 
 - **Authentication** goes in `onRequest` or `preHandler`. `onRequest` is the cheapest place to say no, because the body has not been read yet. `preHandler` is the place when the check needs validated `params` or `body`.
 - **Body-dependent work** goes in `preValidation`. The body is parsed and still untouched, so this is where you trim a title before the schema checks its `minLength`.
-- **Returning from a hook** short-circuits the chain: `return reply.code(401).send(...)` in `onRequest` skips the other hooks and the handler. Only the sending part, `onSend` and `onResponse`, still runs.
+- **Returning from a hook** short-circuits the chain: `return reply.code(401).send(...)` in `onRequest` skips the other hooks and the handler. Only the sending steps still run: `preSerialization` for a payload that is not a string, then `onSend` and `onResponse`.
 
 :::tip
 Hooks are encapsulated too: a hook added inside a plugin applies only to the routes of that plugin. `registerLifecycleHooks(fastify)` runs on the root instance, so this one sees everything.
 :::
+
+## Your turn
+
+`src/hooks.js` shows two hooks, the first and the last of a request that succeeds. Write the six that run in between: `preParsing`, `preValidation`, `preHandler`, `preSerialization`, `onSend` and `onError`, each logging its own name at `info` on the request logger. `onError` receives the error as a third argument: log its message with the name, the way the lesson describes. Add them in the order of the table, and the log lines you get are the evidence that the order is right.
+
+<details>
+<summary>Show the solution</summary>
+
+```solution:/src/hooks.js
+```
+
+</details>
+
+Press the **Solve** button in the editor toolbar to apply it to your files.
 
 ## Try it
 
@@ -66,3 +80,5 @@ curl -i -X POST http://127.0.0.1:3000/api/tasks -H 'content-type: application/js
 ```
 
 The answer is `400`, and the log jumps from `preValidation` to `onError`: a failed validation never reaches `preHandler`. The error message is then the payload that `onSend` sends.
+
+With only the two hooks of the exercise, a successful request logs `onRequest` then `onResponse`, and nothing in between: the six lines you are missing are exactly the stages the request passes through.

@@ -2,16 +2,7 @@ import Fastify from 'fastify';
 
 const fastify = Fastify({ logger: true });
 
-fastify.setErrorHandler((error, request, reply) => {
-  request.log.error({ err: error }, 'the request failed');
-
-  const statusCode = error.statusCode ?? 500;
-
-  reply.code(statusCode).send({
-    error: statusCode >= 500 ? 'Internal Server Error' : error.message,
-    statusCode,
-  });
-});
+// TODO: add an error handler that logs the error and answers with a statusCode and a safe error message
 
 fastify.setNotFoundHandler((request, reply) => {
   reply.code(404).send({

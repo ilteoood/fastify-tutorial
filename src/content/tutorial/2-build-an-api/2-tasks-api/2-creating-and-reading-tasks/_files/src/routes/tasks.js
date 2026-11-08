@@ -3,26 +3,7 @@ export default async function taskRoutes(fastify) {
     return { tasks: fastify.tasks.list() };
   });
 
-  fastify.post(
-    '/tasks',
-    {
-      schema: {
-        body: {
-          type: 'object',
-          required: ['title'],
-          properties: {
-            title: { type: 'string', minLength: 1 },
-            done: { type: 'boolean', default: false },
-          },
-        },
-      },
-    },
-    async (request, reply) => {
-      const task = fastify.tasks.create(request.body);
-
-      return reply.code(201).send({ task });
-    },
-  );
+  // TODO: add the POST /tasks route that creates a task and answers 201
 
   fastify.get(
     '/tasks/:id',

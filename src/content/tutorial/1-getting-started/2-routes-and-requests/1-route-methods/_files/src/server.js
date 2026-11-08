@@ -6,13 +6,15 @@ fastify.get('/', async () => {
   return { hello: 'world' };
 });
 
-fastify.get('/tasks', async () => {
-  return { tasks: [] };
+fastify.get('/version', async () => {
+  return { name: 'tasks-api', version: '1.0.0' };
 });
 
-fastify.post('/tasks', async (request, reply) => {
-  return reply.code(201).send({ title: request.body?.title });
+fastify.get('/health', async () => {
+  return { ok: true };
 });
+
+// TODO: add one fastify.route() for GET and POST /tasks: GET returns { tasks: [] }, POST answers 201 with the title
 
 fastify.patch('/tasks/:id', async (request) => {
   return { id: request.params.id, updated: true };
