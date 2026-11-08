@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import FaviconLinks from '../components/FaviconLinks.astro';
+import HeadTags from '../components/HeadTags.astro';
 
 const lessonPaths = (await getCollection('tutorial'))
   .filter((entry) => entry.data.type === 'lesson')
@@ -30,8 +30,9 @@ function comparePaths(a: string, b: string) {
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Redirecting to {redirect}</title>
-    <FaviconLinks />
+    <HeadTags>
+      <title slot="title">Redirecting to {redirect}</title>
+    </HeadTags>
     <meta http-equiv="refresh" content={`0;url=${redirect}`} />
   </head>
   <body>
