@@ -27,8 +27,6 @@ export function createTaskStore() {
 
       return updated;
     },
-    remove(id) {
-      return tasks.delete(id);
-    },
+    // TODO: add a remove(id) method that deletes the task and returns true when it was there
   };
 }

@@ -1,0 +1,16 @@
+{
+  "name": "fastify-tasks-api",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A small Tasks API built with Fastify",
+  "scripts": {
+    "start": "node --watch src/server.js",
+    "test": "node test/tasks.test.js"
+  },
+  "dependencies": {
+    "@fastify/autoload": "^6.5.1",
+    "@fastify/static": "^10.1.10",
+    "fastify": "^5.12.8"
+  }
+}

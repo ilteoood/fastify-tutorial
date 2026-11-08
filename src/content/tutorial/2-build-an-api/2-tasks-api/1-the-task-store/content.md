@@ -41,10 +41,29 @@ fastify.decorate('tasks', createTaskStore());
 
 Now every route can reach the store with `fastify.tasks`.
 
+## Your turn
+
+The store is missing the method that deletes a task. Write `remove(id)`: it takes the task out of the map and returns `true` when there was a task with that id, `false` when there was not. The route that calls it comes in the next lesson.
+
+<details>
+<summary>Show the solution</summary>
+
+```solution:/src/store/tasks.js
+```
+
+</details>
+
+Press the **Solve** button in the editor toolbar to apply it to your files.
+
 ## Try it
+
+Run these commands in the **Terminal** panel of this tutorial, the one next to the **Output** panel that runs the server.
 
 ```bash
 curl -i http://127.0.0.1:3000/
+node --input-type=module -e "import { createTaskStore } from './src/store/tasks.js'; const store = createTaskStore(); const task = store.create({ title: 'Learn Fastify' }); console.log(store.remove(task.id), store.find(task.id));"
 ```
 
-The answer shows `tasks: 0`. The store is empty for now, the next lesson fills it.
+The first answer shows `tasks: 0`. The store is empty for now, the next lesson fills it.
+
+The second command builds a store and deletes the task it just created. Once `remove` is there it prints `true undefined`: the task was deleted, and reading it back finds nothing.

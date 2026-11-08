@@ -15,21 +15,9 @@ This chapter starts again from the plain Tasks API, without the JSON file, the C
 :::
 ## The bug
 
-We want `GET /stats` to report how many tasks are still open, so we wrote the helper next to the task code, inside `src/routes/tasks.js`:
+We want `GET /stats` to report how many tasks are still open, so we wrote the helper next to the task code, inside `src/routes/tasks.js`: a decorator called `countOpenTasks` that counts the stored tasks whose `done` field is `false`.
 
-```js
-fastify.decorate('countOpenTasks', () => {
-  return fastify.tasks.list().filter((task) => !task.done).length;
-});
-```
-
-Then we called it from a route defined in `src/app.js`:
-
-```js
-fastify.get('/stats', async () => {
-  return { open: fastify.countOpenTasks() };
-});
-```
+Then we called it from a route defined in `src/app.js`: a `GET /stats` handler that answers with the number the helper returns.
 
 The server starts fine and `/api/tasks` answers, but the new route does not:
 
@@ -49,10 +37,32 @@ The decorator lives in the plugin's context. `/stats` is registered at the root,
 
 The same is true for routes: those registered inside a plugin belong to its context, prefix included, which is why the tasks answer at `/api/tasks` and not at `/tasks`.
 
-The root file looks like this:
+The root file, without that route:
 
 ```file:/src/app.js
 ```
+
+## Your turn
+
+Neither half is in the files: `src/routes/tasks.js` does not decorate anything, and `src/app.js` has no `/stats` route. Write both. Inside the plugin, decorate the instance with a `countOpenTasks` function that counts the tasks where `done` is `false`. At the root of `app.js`, after the index route, add `GET /stats` answering `{ open: fastify.countOpenTasks() }`. Restart the server and call `/stats`: it answers `500`, exactly as the transcript above says. That failure is the point of the lesson, so do not try to make the route work yet.
+
+<details>
+<summary>Show the solution</summary>
+
+```solution:/src/app.js
+```
+
+</details>
+
+<details>
+<summary>Show the solution</summary>
+
+```solution:/src/routes/tasks.js
+```
+
+</details>
+
+Press the **Solve** button in the editor toolbar to apply it to your files.
 
 ## The fix
 
@@ -76,13 +86,15 @@ Hooks follow the same direction. A hook added in `app.js` runs for the routes of
 
 ## Try it
 
-After the fix:
+Run these commands in the **Terminal** panel of this tutorial, the one next to the **Output** panel that runs the server.
+
+With the two halves written but the decorator still in the wrong place:
 
 ```bash
 curl -i -X POST http://127.0.0.1:3000/api/tasks -H 'Content-Type: application/json' -d '{"title":"Learn Fastify"}'
 curl -i http://127.0.0.1:3000/stats
 ```
 
-The first call answers `201`, the second `{"open":1}`. Before the fix, the second call is the `500` above.
+The first call answers `201`. The second is the `500` above, with `fastify.countOpenTasks is not a function` in the body. Before you write the two halves it is a `404` instead: there is no `/stats` route at all. Once the decorator lives in `src/app.js` and the copy in `src/routes/tasks.js` is gone, the same call answers `{"open":1}`.
 
 The next lesson is the same idea in the other direction: a plugin that has to share what it adds with its parent.

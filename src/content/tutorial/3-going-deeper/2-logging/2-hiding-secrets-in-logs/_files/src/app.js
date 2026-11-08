@@ -6,18 +6,8 @@ export async function buildApp(options = {}) {
   const fastify = Fastify({
     logger: {
       level: 'info',
-      redact: ['req.headers.authorization', 'req.headers.cookie'],
-      serializers: {
-        req(request) {
-          return {
-            method: request.method,
-            url: request.url,
-            host: request.host,
-            remoteAddress: request.ip,
-            headers: request.headers,
-          };
-        },
-      },
+      // TODO: redact the incoming `authorization` and `cookie` headers
+      // TODO: add a `req` serializer that keeps method, url, host, remoteAddress and headers
     },
     ...options,
   });

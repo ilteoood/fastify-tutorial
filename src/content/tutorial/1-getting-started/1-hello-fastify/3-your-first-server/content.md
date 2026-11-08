@@ -88,4 +88,30 @@ The **Output** panel at the bottom shows what the server is doing. When the serv
 The server listens on `localhost` by default, which means it only accepts connections from your own machine. That is the safe default. To accept connections from other machines you would pass `host: '0.0.0.0'`.
 :::
 
+## Your turn
+
+The server has one route per lesson so far. Add a `GET /health` route that answers with `{ ok: true }`: health routes are what a load balancer or a hosting platform calls to check that your app is alive.
+
+Write it exactly like the routes that are already in the file, and leave those alone — the `GET /version` route from the first lesson is part of the app now.
+
+<details>
+<summary>Show the solution</summary>
+
+```solution:/src/server.js
+```
+
+</details>
+
+Press the **Solve** button in the editor toolbar to apply it to your files.
+
+## Try it
+
+Run these commands in the **Terminal** panel of this tutorial, the one next to the **Output** panel that runs the server.
+
+```bash
+curl -i http://127.0.0.1:3000/health
+```
+
+The first line of the answer must be `HTTP/1.1 200 OK`, followed by the body `{"ok":true}`.
+
 Now let's actually talk to the server.

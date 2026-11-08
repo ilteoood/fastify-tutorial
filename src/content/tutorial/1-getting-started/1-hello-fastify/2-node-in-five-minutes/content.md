@@ -1,7 +1,7 @@
 ---
 type: lesson
 title: Node.js in five minutes
-focus: '/src/server.js'
+focus: '/scratch.mjs'
 ---
 
 # Node.js in five minutes
@@ -108,6 +108,32 @@ Almost every function you write in Fastify will be `async`. We will see why in a
 - `dependencies` — the libraries your project needs. `npm install` downloads them into `node_modules`.
 
 The `^` in `^5.12.8` means "any version from 5.12.8 up to, but not including, 6.0.0".
+
+## Your turn
+
+`scratch.mjs` in the root of the project is almost empty, and it is all yours: nothing imports it, so you can break it as much as you like.
+
+Make it write a line of text into `hello.txt`, read the file back as UTF-8 text, and log the text with `console.log`. The import of `readFile` and `writeFile` from `node:fs/promises` is already at the top of the file, and both calls return a promise, so `await` them.
+
+<details>
+<summary>Show the solution</summary>
+
+```solution:/scratch.mjs
+```
+
+</details>
+
+Press the **Solve** button in the editor toolbar to apply it to your files.
+
+## Try it
+
+Run these commands in the **Terminal** panel of this tutorial, the one next to the **Output** panel that runs the server.
+
+```bash
+node scratch.mjs && cat hello.txt
+```
+
+`node` prints the text you read back, and `cat` prints the file that is now in the project.
 
 :::tip
 That is everything you need for now. Every time we meet a new Node.js feature, we will stop and explain it.

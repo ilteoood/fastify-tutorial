@@ -1,7 +1,5 @@
 export default async function taskRoutes(fastify) {
-  fastify.decorate('countOpenTasks', () => {
-    return fastify.tasks.list().filter((task) => !task.done).length;
-  });
+  // TODO: decorate the instance with countOpenTasks
 
   fastify.get('/tasks', async () => {
     return { tasks: fastify.tasks.list() };

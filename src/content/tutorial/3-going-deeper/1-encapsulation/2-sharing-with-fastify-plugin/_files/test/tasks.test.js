@@ -114,19 +114,6 @@ test('DELETE /api/tasks/:id removes a task', async (t) => {
   assert.equal(response.statusCode, 204);
 });
 
-test('GET / returns the settings shared by the plugin', async (t) => {
-  const fastify = await buildTestApp(t);
-
-  const response = await fastify.inject({
-    method: 'GET',
-    url: '/',
-  });
-
-  assert.equal(response.statusCode, 200);
-  assert.equal(response.json().name, 'Tasks API');
-  assert.equal(response.headers['x-api-name'], 'Tasks API');
-});
-
 test('GET /stats counts the tasks that are still open', async (t) => {
   const fastify = await buildTestApp(t);
 

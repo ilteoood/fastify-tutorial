@@ -3,14 +3,7 @@ import { buildApp } from './app.js';
 const start = async () => {
   const fastify = await buildApp({ logger: true });
 
-  const shutdown = async (signal) => {
-    fastify.log.info(`${signal} received, closing the server`);
-    await fastify.close();
-    process.exit(0);
-  };
-
-  process.once('SIGINT', () => shutdown('SIGINT'));
-  process.once('SIGTERM', () => shutdown('SIGTERM'));
+  // TODO: add a `shutdown` function that logs the signal, closes the server and exits with code 0, then register it for SIGINT and SIGTERM
 
   try {
     await fastify.listen({ port: 3000 });

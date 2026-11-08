@@ -6,9 +6,7 @@ export default async function taskRoutes(fastify) {
   fastify.post(
     '/tasks',
     {
-      config: {
-        rateLimit: { max: 5, timeWindow: '1 minute' },
-      },
+      // TODO: limit this route to five tasks per minute
       schema: {
         body: {
           type: 'object',
@@ -21,7 +19,7 @@ export default async function taskRoutes(fastify) {
       },
     },
     async (request, reply) => {
-      const task = fastify.tasks.create(request.body);
+      const task = await fastify.tasks.create(request.body);
 
       return reply.code(201).send({ task });
     },
@@ -72,7 +70,7 @@ export default async function taskRoutes(fastify) {
       },
     },
     async (request, reply) => {
-      const task = fastify.tasks.update(request.params.id, request.body);
+      const task = await fastify.tasks.update(request.params.id, request.body);
 
       if (task === undefined) {
         return reply.code(404).send({ error: 'Task not found' });
@@ -96,7 +94,7 @@ export default async function taskRoutes(fastify) {
       },
     },
     async (request, reply) => {
-      const removed = fastify.tasks.remove(request.params.id);
+      const removed = await fastify.tasks.remove(request.params.id);
 
       if (!removed) {
         return reply.code(404).send({ error: 'Task not found' });

@@ -1,9 +1,13 @@
 import assert from 'node:assert/strict';
+import { randomUUID } from 'node:crypto';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { test } from 'node:test';
 import { buildApp } from '../src/app.js';
 
 async function buildTestApp(t) {
-  const fastify = await buildApp();
+  const storeFilePath = join(tmpdir(), `tasks-${randomUUID()}.json`);
+  const fastify = await buildApp({ storeFilePath });
   await fastify.ready();
 
   t.after(() => fastify.close());
@@ -47,34 +51,6 @@ test('POST /api/tasks rejects a body without a title', async (t) => {
   });
 
   assert.equal(response.statusCode, 400);
-});
-
-test('POST /api/tasks accepts a title as text/plain', async (t) => {
-  const fastify = await buildTestApp(t);
-
-  const response = await fastify.inject({
-    method: 'POST',
-    url: '/api/tasks',
-    headers: { 'content-type': 'text/plain' },
-    payload: 'Buy milk',
-  });
-
-  assert.equal(response.statusCode, 201);
-  assert.equal(response.json().task.title, 'Buy milk');
-});
-
-test('POST /api/tasks rejects an empty text/plain body', async (t) => {
-  const fastify = await buildTestApp(t);
-
-  const response = await fastify.inject({
-    method: 'POST',
-    url: '/api/tasks',
-    headers: { 'content-type': 'text/plain' },
-    payload: '   ',
-  });
-
-  assert.equal(response.statusCode, 400);
-  assert.equal(response.json().message, 'title is required');
 });
 
 test('GET /api/tasks returns the stored tasks', async (t) => {
@@ -140,4 +116,40 @@ test('DELETE /api/tasks/:id removes a task', async (t) => {
   });
 
   assert.equal(response.statusCode, 204);
+});
+
+test('tasks survive a restart', async (t) => {
+  const storeFilePath = join(tmpdir(), `tasks-${randomUUID()}.json`);
+
+  const before = await buildApp({ storeFilePath });
+  await before.ready();
+
+  await before.inject({
+    method: 'POST',
+    url: '/api/tasks',
+    payload: { title: 'Learn Fastify' },
+  });
+
+  await before.close();
+
+  const fastify = await buildApp({ storeFilePath });
+  await fastify.ready();
+
+  t.after(() => fastify.close());
+
+  const stored = await fastify.inject({
+    method: 'GET',
+    url: '/api/tasks',
+  });
+
+  assert.equal(stored.json().tasks.length, 1);
+  assert.equal(stored.json().tasks[0].title, 'Learn Fastify');
+
+  const created = await fastify.inject({
+    method: 'POST',
+    url: '/api/tasks',
+    payload: { title: 'Write a test' },
+  });
+
+  assert.equal(created.json().task.id, 2);
 });

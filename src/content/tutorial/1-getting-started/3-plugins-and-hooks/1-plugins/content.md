@@ -9,11 +9,7 @@ focus: '/src/routes/tasks.js'
 `src/server.js` is getting long, and it will keep growing. Fastify's answer is **plugins**: a function that receives the server and adds routes, decorators or hooks to it.
 
 ```js
-export default async function taskRoutes(fastify) {
-  fastify.get('/tasks', async () => {
-    return { tasks: [] };
-  });
-}
+export default async function taskRoutes(fastify) {}
 ```
 
 A plugin is just a function. Two rules make it work:
@@ -46,7 +42,27 @@ fastify.register(taskRoutes, { prefix: '/api' });
 ```file:/src/routes/tasks.js
 ```
 
+## Your turn
+
+`src/routes/tasks.js` is an empty plugin: `src/server.js` already imports it, registers it with `{ prefix: '/api' }` and keeps every other route. Your job is the body of the plugin.
+
+Add `GET /tasks` returning `{ tasks: [] }` and `POST /tasks` answering `201` with `{ title: request.body?.title }`. Write both paths without the prefix — `register` puts `/api` in front of them, so the client calls `/api/tasks`.
+
+`GET /tasks` and `POST /tasks` are the two routes you registered with `fastify.route` in the previous chapter; inside the plugin you can write them with `fastify.get` and `fastify.post`.
+
+<details>
+<summary>Show the solution</summary>
+
+```solution:/src/routes/tasks.js
+```
+
+</details>
+
+Press the **Solve** button in the editor toolbar to apply it to your files.
+
 ## Try it
+
+Run these commands in the **Terminal** panel of this tutorial, the one next to the **Output** panel that runs the server.
 
 ```bash
 curl -i http://127.0.0.1:3000/api/tasks
@@ -62,16 +78,7 @@ If you want a plugin to share everything with its parent, wrap it with `fastify-
 ```js
 import fastifyPlugin from 'fastify-plugin';
 
-export default fastifyPlugin(async function taskRoutes(fastify) {
-  fastify.get('/tasks', async () => {
-    return { tasks: [] };
-  });
-
-  fastify.post('/tasks', async (request, reply) => {
-    reply.code(201);
-    return { title: request.body?.title };
-  });
-});
+export default fastifyPlugin(async function taskRoutes(fastify) {});
 ```
 
 :::warn

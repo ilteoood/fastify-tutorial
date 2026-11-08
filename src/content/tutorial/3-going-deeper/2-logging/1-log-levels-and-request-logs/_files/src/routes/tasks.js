@@ -24,7 +24,7 @@ export default async function taskRoutes(fastify) {
     async (request, reply) => {
       const task = fastify.tasks.create(request.body);
 
-      request.log.info({ taskId: task.id }, 'task created');
+      // TODO: log the new task with request.log.info, carrying its id in a `taskId` field
 
       return reply.code(201).send({ task });
     },

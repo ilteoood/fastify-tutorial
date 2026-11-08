@@ -25,13 +25,7 @@ fastify.get(
   '/tasks',
   {
     schema: {
-      querystring: {
-        type: 'object',
-        properties: {
-          done: { type: 'boolean' },
-          limit: { type: 'integer', minimum: 1, maximum: 100, default: 10 },
-        },
-      },
+      // TODO: add a querystring schema: done is a boolean, limit is an integer from 1 to 100 and defaults to 10
     },
   },
   async (request) => {

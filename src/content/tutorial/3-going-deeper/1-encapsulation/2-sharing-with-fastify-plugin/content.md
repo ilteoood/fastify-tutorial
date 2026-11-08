@@ -71,7 +71,31 @@ fastify.register(taskRoutes, { prefix: '/api' });
 
 `settings` adds no routes, so it needs no prefix and is wrapped. `taskRoutes` owns the routes, so it stays a plain plugin, and the `/api` prefix stays on its registration in `app.js`.
 
+## Your turn
+
+The plugin in `src/plugins/settings.js` is not wrapped: it runs, it decorates, it adds its hook, and none of that reaches the root. Import `fp` from `fastify-plugin` and export the same function wrapped in it. Change nothing else — not the decorator, not the hook, and not the registration in `src/app.js`. The solution also puts back the test that checks the shared name, so `npm test` ends green only once the wrapper is there.
+
+<details>
+<summary>Show the solution</summary>
+
+```solution:/src/plugins/settings.js
+```
+
+</details>
+
+<details>
+<summary>Show the solution</summary>
+
+```solution:/test/tasks.test.js
+```
+
+</details>
+
+Press the **Solve** button in the editor toolbar to apply it to your files.
+
 ## Try it
+
+Run these commands in the **Terminal** panel of this tutorial, the one next to the **Output** panel that runs the server.
 
 ```bash
 curl -i http://127.0.0.1:3000/
@@ -80,3 +104,5 @@ curl -i http://127.0.0.1:3000/api/tasks
 ```
 
 Every response carries `x-api-name: Tasks API`. The first also returns the name and version that the plugin decorated, and the last still answers under `/api`. `GET /tasks` without the prefix is a `404`.
+
+Before the wrapper, none of that happens: `/api/tasks` has no `x-api-name` header, and `/` is the `500` the lesson describes, with `Cannot read properties of undefined (reading 'name')` in the body. The test that covers both cases goes from red to green when you add `fp`, so `npm test` follows the change.

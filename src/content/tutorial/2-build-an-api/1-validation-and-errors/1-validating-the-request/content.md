@@ -6,6 +6,8 @@ focus: '/src/server.js'
 
 # Validating the request
 
+Part 1 built a small toy: a handful of routes that answered with fixed values. From this chapter on we build the real Tasks API, and those toy routes make way for it.
+
 Until now the server trusts whatever the client sends. If a client posts `{"title": 42}`, your code has to work out on its own whether that is acceptable.
 
 Fastify validates for you. You describe the shape of the data you expect with a **JSON Schema**, and Fastify checks every request against it before your handler runs.
@@ -49,15 +51,35 @@ schema: {
 
 When the data does not match, Fastify answers `400 Bad Request` and never calls your handler.
 
+## Your turn
+
+The create route validates its body, but `GET /tasks` still accepts any query string. Give that route a `querystring` schema: `done` is a boolean and `limit` is a whole number from 1 to 100 that defaults to 10. Leave the create route alone, because it is the example the lesson walks through.
+
+<details>
+<summary>Show the solution</summary>
+
+```solution:/src/server.js
+```
+
+</details>
+
+Press the **Solve** button in the editor toolbar to apply it to your files.
+
 ## Try it
+
+Run these commands in the **Terminal** panel of this tutorial, the one next to the **Output** panel that runs the server.
 
 ```bash
 curl -i -X POST http://127.0.0.1:3000/tasks -H 'Content-Type: application/json' -d '{"title":"Learn Fastify"}'
 curl -i -X POST http://127.0.0.1:3000/tasks -H 'Content-Type: application/json' -d '{}'
 curl -i -X POST http://127.0.0.1:3000/tasks -H 'Content-Type: application/json' -d '{"title":""}'
+curl -s 'http://127.0.0.1:3000/tasks?limit=500'
+curl -s 'http://127.0.0.1:3000/tasks?done=true'
 ```
 
 The first request creates a task. The second one is answered with `400 Bad Request`, because `title` is required. The third one is rejected too, because `minLength: 1` forbids an empty string.
+
+The fourth request is rejected because the schema allows no more than 100 tasks at a time, and the message names `limit`. The last one is accepted and the answer echoes the query string.
 
 ## Fastify fixes simple mistakes for you
 
