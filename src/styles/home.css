@@ -50,9 +50,10 @@
   --teal: #b8a06e;
   --red: #d93a3a;
   --glow-amber: #c99a4a59;
-  --velocity-from: #7d5f28;
-  --velocity-mid: #96702f;
-  --velocity-to: #6d5c36;
+  /* fastify.dev's literal stops reach only 1.56:1 on cream: same hue and saturation, lightness lowered until 3.15:1 (AA large text) */
+  --velocity-from: #af8234;
+  --velocity-mid: #b5801f;
+  --velocity-to: #a1864f;
   color-scheme: light;
 }
 
